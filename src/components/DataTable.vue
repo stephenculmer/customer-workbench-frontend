@@ -1,6 +1,9 @@
 <script setup>
 import { ref, watch } from 'vue';
 import { useDate } from 'vuetify';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
 
 const itemsPerPage = ref(5)
 const headers = ref([
@@ -24,6 +27,11 @@ const endTime = ref(null)
 const showEndTimeMenu = ref(false)
 const loading = ref(true)
 const totalItems = ref(0)
+
+const goBack = () => {
+  router.back()
+}
+
 function loadItems ({ page, itemsPerPage, sortBy}) {
   startTime.value && console.log(startTime.value.split(":"))
   let startDateTime = null
@@ -104,7 +112,13 @@ watch(endTime, () => {
 </script>
 
 <template>
-  <v-card title="Customer Interactions">
+  <v-card>
+    <v-card-title class="d-flex align-center">
+      <v-btn icon @click="goBack" class="mr-2">
+        <v-icon>mdi-arrow-left</v-icon>
+      </v-btn>
+      <span>Customer Interactions</span>
+    </v-card-title>
     <div class="d-flex">
       <v-text-field v-model="customerId" class="ma-2 w-sm-0" density="compact" placeholder="Search Customer ID..." hide-details></v-text-field>
       <v-select v-model="interactionType" class="ma-2 w-sm-0" density="compact" label="Interaction Type" :items="['Any', 'Chat', 'Email', 'Ticket']" hide-details></v-select>
